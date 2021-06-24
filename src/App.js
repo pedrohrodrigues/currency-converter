@@ -7,9 +7,14 @@ const CURRENCY_URL = 'http://api.exchangeratesapi.io/v1/latest?access_key='+APP_
 
 
 
+
 function App() {
   const [currencyTypes, setCurrencyTypes] = useState([]);
   const [apiError, setApiError] = useState();
+  const [amount, setAmount] = useState()
+  const [from, setFrom] = useState()
+  const [to, setTo] = useState()
+  const [conversion, setConversion] = useState()
 
   useEffect(() => {
     try {
@@ -22,11 +27,42 @@ function App() {
       setApiError('An error has occured with the api, please try again');
     }
   }, [])
+  
+  async function convert() {
+    const convertURL = `http://api.exchangeratesapi.io/v1/latest?base=${from}&symbols=${to}&access_key=${APP_ID}`;
+    const data = await fetch(convertURL, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin' : 'http://localhost:8000',
+      },
+      method: "GET",
+			dataType: "jsonp",
+    }).then(response => response.json()).then(json => json.rates);
+    const conversion = (amount * data[to]).toFixed(2);
+    setConversion(conversion);
+  }
+
+  function handleChangeAmount(e) {
+    setAmount(e.target.value)
+  }
+
+  function handleChangeTo(e) {
+    setTo(e.target.value)
+  }
 
   
+  function handleChangeFrom(e) {
+    setFrom(e.target.value)
+  }
+
   return (
     <div className="App">
-      <Currency currencyTypes={currencyTypes}  />
+      <Currency 
+        currencyTypes={currencyTypes} onChangeAmount={handleChangeAmount} onClickButton={convert} 
+        conversion={conversion}
+        onChangeTo={handleChangeTo}
+        onChangeFrom={handleChangeFrom}
+      />
       {apiError}
     </div>
   );

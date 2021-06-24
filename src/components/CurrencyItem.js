@@ -18,11 +18,11 @@ export class Currency extends React.Component{
       <div className="currency-converter">
           <div className="currency-converter__item">
             <label htmlFor="amount">Amount</label>
-            <input id="amount" type="number" />
+            <input id="amount" type="number" onChange={this.props.onChangeAmount}/>
           </div>
           <div className="currency-converter__item">
             <label htmlFor="from">From</label>
-            <select id="from">
+            <select id="from" onChange={this.props.onChangeFrom}>
               {this.props.currencyTypes.map(option =>(
                 <option key={option} value={option}>{option}</option>
               ))}
@@ -30,17 +30,17 @@ export class Currency extends React.Component{
           </div>
           <div className="currency-converter__item">
             <label htmlFor="to">to</label>
-            <select id="to">
+            <select id="to" onChange={this.props.onChangeTo}>
               {this.props.currencyTypes.map(option =>(
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>
           </div>
-          <button onClick={this.convertCurrency}>
+          <button onClick={this.props.onClickButton}>
             Convert
           </button>
           <div>
-            asdqwezxc
+          {this.props.conversion}
           </div>
       </div>
     </div>
