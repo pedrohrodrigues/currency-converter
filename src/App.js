@@ -15,6 +15,7 @@ function App() {
   const [from, setFrom] = useState()
   const [to, setTo] = useState()
   const [conversion, setConversion] = useState()
+  const [conversionsHistory, setConversionHistory] = useState([])
 
   useEffect(() => {
     try {
@@ -30,16 +31,26 @@ function App() {
   
   async function convert() {
     const convertURL = `http://api.exchangeratesapi.io/v1/latest?base=${from}&symbols=${to}&access_key=${APP_ID}`;
-    const data = await fetch(convertURL, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin' : 'http://localhost:8000',
-      },
-      method: "GET",
-			dataType: "jsonp",
-    }).then(response => response.json()).then(json => json.rates);
-    const conversion = (amount * data[to]).toFixed(2);
-    setConversion(conversion);
+    try{
+      const data = await fetch(convertURL, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin' : 'http://localhost:8000',
+        },
+        method: "GET",
+        dataType: "jsonp",
+      }).then(response => response.json()).then(json => json.rates);
+      const conversion = (amount * data[to]).toFixed(2);
+      const currentResearch = conversionsHistory;
+      if(conversionsHistory.length > 10) {
+        currentResearch.shift();
+      }
+      currentResearch.push(`${amount} ${from} is equal to ${conversion} ${to}`);
+      setConversionHistory(currentResearch)
+      setConversion(conversion + ' ' + to);
+    } catch(error) {
+      setApiError('An error has occured with the api, please try again');
+    }
   }
 
   function handleChangeAmount(e) {
@@ -60,6 +71,7 @@ function App() {
       <Currency 
         currencyTypes={currencyTypes} onChangeAmount={handleChangeAmount} onClickButton={convert} 
         conversion={conversion}
+        history={conversionsHistory}
         onChangeTo={handleChangeTo}
         onChangeFrom={handleChangeFrom}
       />
