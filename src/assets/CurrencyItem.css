@@ -1,0 +1,22 @@
+.currency-container {
+  background: #0a146e;
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 30px 0; }
+
+.currency-container h1 {
+  width: 100%; }
+
+.currency-converter {
+  background: white;
+  border-radius: 6px;
+  color: #161f2a;
+  display: flex;
+  justify-content: flex-start;
+  padding: 30px 0;
+  width: 50%; }
+  .currency-converter__item label {
+    display: block;
+    text-align: left; }
