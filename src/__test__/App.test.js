@@ -43,11 +43,13 @@ it("has converted currency", async () =>{
       rates: rates,
     }
   }));
+  await act( async ()=> {
   const wrapper = mount(<App />);
   const currency = wrapper.find(Currency); 
   const convertButton = currency.find('#convertButton');
   convertButton.simulate('click');
   const researchList = wrapper.find('#previousReseaches');
-  expect(researchList.length).toBeGreaterThan(0);
+  expect(researchList.length).toBeGreaterThan(0)
+  });
 
 });
