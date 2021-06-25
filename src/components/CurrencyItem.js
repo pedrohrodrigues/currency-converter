@@ -2,9 +2,6 @@ import React from 'react';
 import '../assets/CurrencyItem.css';
 import PropTypes from 'prop-types';
 
-const APP_ID = 'c48d9272f54091272549db54a5bc6051';
-const CONVERT_URL = 'https://openexchangerates.org/api/convert/?app_id='+APP_ID;
-
 export class Currency extends React.Component{
 
   render() {
@@ -33,21 +30,13 @@ export class Currency extends React.Component{
             </select>
           </div>
           <div className="currency-converter__item currency-converter__item--button">
-            <button onClick={this.props.onClickButton}>
+            <button id="convertButton" onClick={this.props.onClickButton}>
               Convert
             </button>
           </div>
-          <div class="conversion_result">
+          <div className="conversion_result">
             {this.props.conversion}
           </div>
-      </div>
-      <div>
-        Previous Researchs      
-          <ul>
-            {this.props.history.map(h => (
-              <li key={h}> {h} </li>
-            ))}
-          </ul>
       </div>
     </div>
   );
