@@ -71,8 +71,8 @@ loadCurrencyTypes();
         onChangeTo={handleChangeTo}
         onChangeFrom={handleChangeFrom}
       />
-      <div data-testid="apiError" class="api-error" id="apiError">{apiError}</div>
-      <div class="previous-researches">
+      <div data-testid="apiError" className="api-error" id="apiError">{apiError}</div>
+      <div className="previous-researches">
         Previous Researches      
           <ul id="previousReseaches">
             {conversionsHistory.map(h => (
