@@ -13,5 +13,5 @@ run npm start at the main folder
 ## How to install and run with docker
 
 Run docker build -t currency . <br />
-Run docker run -p 8082:3001 currency . <br />
+Run docker run -p 8082:3001 currency <br />
 use the url http://localhost:8082/ on the browser
