@@ -3,17 +3,10 @@ import './App.css';
 import axios from 'axios';
 import { Currency } from './components/CurrencyItem';
 
-
-const APP_ID = 'c48d9272f54091272549db54a5bc6051';
-const CURRENCY_URL = 'http://api.exchangeratesapi.io/v1/latest?access_key='+APP_ID;
-
-
-
-
 function App() {
   const [currencyTypes, setCurrencyTypes] = useState([]);
   const [apiError, setApiError] = useState();
-  const [amount, setAmount] = useState()
+  const [amount, setAmount] = useState(0)
   const [from, setFrom] = useState()
   const [to, setTo] = useState()
   const [conversion, setConversion] = useState()
@@ -22,7 +15,10 @@ function App() {
   useEffect(() => {
     const loadCurrencyTypes = async () => {
     try {
-      const { data } = await axios.get(CURRENCY_URL);
+      setApiError('');
+      const { data } = await axios.get('/currencyRates');
+      setFrom(Object.keys(data.rates)[0]);
+      setTo(Object.keys(data.rates)[0]);
       setCurrencyTypes([...Object.keys(data.rates)])
     } catch(error) {
       setApiError('An error has occured with the api, please try again');
@@ -32,9 +28,14 @@ loadCurrencyTypes();
 }, []);
   
   async function convert() {
-    const convertURL = `http://api.exchangeratesapi.io/v1/latest?base=${from}&symbols=${to}&access_key=${APP_ID}`;
+    setApiError('');
     try{
-      const { data } = await axios.get(convertURL);
+      const { data } = await axios.get('/convert', {
+        headers: {
+          from: from,
+          to: to,
+        } 
+      });
       const conversion = (amount * data.rates[to]).toFixed(2);
       const currentResearch = conversionsHistory;
       if(conversionsHistory.length > 10) {
@@ -65,12 +66,13 @@ loadCurrencyTypes();
     <div className="App">
       <Currency 
         currencyTypes={currencyTypes} onChangeAmount={handleChangeAmount} onClickButton={convert} 
+        amount={amount}
         conversion={conversion}
         onChangeTo={handleChangeTo}
         onChangeFrom={handleChangeFrom}
       />
-      <div data-testid="apiError" id="apiError">{apiError}</div>
-      <div>
+      <div data-testid="apiError" class="api-error" id="apiError">{apiError}</div>
+      <div class="previous-researches">
         Previous Researches      
           <ul id="previousReseaches">
             {conversionsHistory.map(h => (

@@ -11,7 +11,7 @@ export class Currency extends React.Component{
       <div className="currency-converter">
           <div className="currency-converter__item">
             <label htmlFor="amount">Amount</label>
-            <input id="amount" type="number" onChange={this.props.onChangeAmount}/>
+            <input id="amount" type="number" value={this.props.amount} onChange={this.props.onChangeAmount}/>
           </div>
           <div className="currency-converter__item">
             <label htmlFor="from">From</label>
